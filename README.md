@@ -1,7 +1,11 @@
 # ch-go test
 
+**Conclusion: If the statement has result, then you must set Result field of proto.Result struct.**
+
+---
+
 ```bash
-go test ./
+go test -timeout 30s -run ^TestSimplest$ github.com/oliverdding/ch-go-test
 ```
 
 Result:
