@@ -2,7 +2,11 @@ module github.com/oliverdding/ch-go-test
 
 go 1.21.0
 
-require github.com/ClickHouse/ch-go v0.58.2
+require (
+	github.com/ClickHouse/ch-go v0.58.2
+	github.com/json-iterator/go v1.1.12
+	go.uber.org/zap v1.25.0
+)
 
 require (
 	github.com/dmarkham/enumer v1.5.8 // indirect
@@ -13,6 +17,8 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pascaldekloe/name v1.0.1 // indirect
 	github.com/pierrec/lz4/v4 v4.1.18 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
@@ -21,7 +27,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.25.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect

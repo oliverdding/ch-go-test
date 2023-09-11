@@ -6,6 +6,7 @@ import (
 
 	"github.com/ClickHouse/ch-go"
 	"github.com/ClickHouse/ch-go/proto"
+	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
 )
 
@@ -56,5 +57,60 @@ func TestSimplest(t *testing.T) {
 		} else {
 			logger.Sugar().Infof("%s:%d success", host.Row(i), port.Row(i))
 		}
+	}
+}
+
+type user struct {
+	Name string `json:"name"`
+	Age  uint   `json:"age"`
+}
+
+func TestJSONObject(t *testing.T) {
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		t.Fatal(err)
+	}
+	options := ch.Options{
+		Logger:   logger,
+		Address:  "127.0.0.1:9000",
+		Database: "default",
+		User:     "root",
+		Password: "root",
+	}
+
+	client, err := ch.Dial(context.Background(), options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+	err = client.Do(context.Background(), ch.Query{
+		Body: "CREATE TABLE IF NOT EXISTS test (v JSON) ENGINE=Memory;",
+	})
+	if err != nil {
+		logger.Sugar().Fatal(err)
+	}
+
+	var (
+		users proto.ColStr
+	)
+	temp, _ := jsoniter.ConfigFastest.MarshalToString(&user{
+		Name: "user1",
+		Age:  12,
+	})
+	users.Append(temp)
+	temp, _ = jsoniter.ConfigFastest.MarshalToString(&user{
+		Name: "user2",
+		Age:  13,
+	})
+	users.Append(temp)
+	input := proto.Input{
+		{Name: "v", Data: &users},
+	}
+	err = client.Do(context.Background(), ch.Query{
+		Body:  input.Into("test"),
+		Input: input,
+	})
+	if err != nil {
+		logger.Sugar().Fatal(err)
 	}
 }
